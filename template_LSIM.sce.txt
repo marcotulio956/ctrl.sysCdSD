@@ -1,0 +1,33 @@
+//Importação dos dados medidos com o osciloscópio
+U = read_csv('<nome_do_arquivo_com_dados_de_entrada>.CSV'); //  Importação do sinal de entrada
+                                                            //U é do tipo string
+Y = read_csv('<nome_do_arquivo_com_dados_de_saída>.CSV'); //  Importação do sinal de saída
+                                                          //Y é do tipo string
+
+[nr,nc] = size (U);
+fim_1 = max(nr,nc);
+fim_2 = min(nr,nc);
+u = U(4:fim_1,fim_2-1);                 // Vetor de valores de tensão de entrada
+y = Y(4:fim_1,fim_2-1);                 // Vetor de valores de tensão de saída
+t = U(4:fim_1,fim_2-2);                 // Vetor de instantes de tempo
+
+u = evstr(u);                           // Converte de string para números reais
+t = evstr(t);                           // Converte de string para números reais
+y = evstr(y);                           // Converte de string para números reais
+
+
+// Simulação do sistema dinâmico
+s = poly(0,"s");
+
+P = 1/(0.07*s+1);                   //ESCREVA AQUI A FUNÇÃO DE TRANSFERÊNCIA DO SEU SISTEMA DINÂMICO
+
+
+sys = syslin("c",P);                // Definição da função de transferência
+y_sim = csim(u',t'+10,sys);            // u (entrada) e t (tempo) devem ser vetores linha; 
+                                    // y_sim é a saída simulada do sistema dinâmico
+
+
+plot(t,u)                       // Entrada medida em azul
+set(gca(),"auto_clear","off")
+plot(t,y,'r')                   // Saída medida em vermelho
+plot(t,y_sim,'g')               //Saída simulada em verde
