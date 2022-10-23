@@ -16,9 +16,12 @@ double Valor_Sensor; // Variavel que armazenara o valor da saida (tensao no capa
 double Valor_Atuador; // Variavel que armazenara o valor da 
                    // saida do controlador (acao de controle)
 
-double Erro; // Variavel que armazenara o sinal de erro (Valor_referencia - Valor_Sensor)
-//double I = 0;
+double Erro, Ultimo_Erro; // Variavel que armazenara o sinal de erro (Valor_referencia - Valor_Sensor)
+double I = 0;
 double P;
+double D;
+
+double integralError = 0, derivativeError = 0;
 
 const double Kp = 1; // Ganho proporcional do controlador. 
 
@@ -26,11 +29,11 @@ const double Ki = 2;  // Ganho integral do controlador. Tente aumentar esse ganh
                       // ate conseguir um desempenho satisfatorio do sistema de controle,
                       // tanto em termos da resposta transitoria quanto da resposta em
                       // estado estacionario.
-//const double Kd = 2;  // Ganho derivativo do controlador.
+const double Kd = 2;  // Ganho derivativo do controlador.
 
 const double T = 5; // Tempo de amostragem em milissegundos
 
-double last_time;
+double last_time, last_erro;
 
 void setup(){
   
@@ -43,8 +46,6 @@ pinMode(Atuador, OUTPUT); // Define o pino do atuador como uma saida
 //Serial.begin(9600); // Especifique a velocidade da comunicacao serial
 last_time = millis();
 }
-
-
 
 void loop(){
   if ((millis() - last_time) > T)
@@ -65,13 +66,18 @@ void loop(){
   //sera um sinal PWM de 8 bits
   //Erro = -Erro; // Troca-se o sinal do erro porque o sistema em malha aberta 
                 // tem ganho negativo
+
+  integralError += Erro;
+  derivativeError = (Erro - Ultimo_Erro);
   
   P = Kp*Erro;              // PROPORCIONAL DIGITAL 
-  I = I + Ki*(T/1000)*Erro; // INTEGRAL DIGITAL 
-  D = D + Kd/(T/1000)*Erro/  // DIFERENCIADOR DIGITAL 
+  I = I + Ki*(T/1000)*integralError; // INTEGRAL DIGITAL 
+  D = D + Kd*(T/1000)*derivativeError; / DIFERENCIADOR DIGITAL 
 
   Valor_Atuador = constrain(P+I+D, 0, 255); // Restringe o valor do sinal de atuacao
                                             // a faixa de 0V a 5V (0 a 255)
+
+  Ultimo_Erro = Erro;
   
   analogWrite(Atuador, Valor_Atuador); // Escreve no pino 5 (Atuador), que simulara
                                        // uma saida analogica via PWM 

@@ -15,6 +15,7 @@ double Valor_Atuador; // Variavel que armazenara o valor da
 double Erro; // Variavel que armazenara o sinal de erro (Valor_referencia - Valor_Sensor)
 double I = 0;
 double P;
+double integralError = 0;
 
 const double Kp = 1; // Ganho proporcional do controlador. {1 5 10} 1 2 1000
 const double Ki = 10;   // 2 - 20 Ganho integral do controlador. Tente aumentar esse ganho gradativamente
@@ -72,9 +73,11 @@ void loop(){
         //sera um sinal PWM de 8 bits
         //Erro = -Erro; // Troca-se o sinal do erro porque o sistema em malha aberta 
         // tem ganho negativo
+
+        integralError += Erro;
         
         P = Kp*Erro;        // PROPORCIONAL DIGITAL 
-        I = I + Ki*(T/1000)*Erro; // INTEGRAL DIGITAL 
+        I = Ki*(T/1000)*integralError; // INTEGRAL DIGITAL 
         Valor_Atuador = constrain(P+I, 0, 255); // Restringe o valor do sinal de atuacao
         // a faixa de 0V a 5V (0 a 255)
         
