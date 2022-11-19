@@ -5,7 +5,7 @@ clear
 
 w = 0.9982;
 Tau_alpha = 8.1053;
-Tsampling = 8.3*Tau_alpha;
+Tsampling = Tau_alpha/10;
 z = 4.8715;
 sin_freq = 2;
 
@@ -40,19 +40,21 @@ us_sin=stepAmplitude*sin_freq/(s^2+sin_freq^2);%sinusoidal
 a1=2*z*w; a2=w^2; b1=w^2*Tau_alpha; b2=w^2;
 
 % SS k
-A = [0 1; (-1-Tsampling*a1-Tsampling^2*a2) (2-Tsampling*a1)];
-B = [0 0; (Tsampling^2*b2-Tsampling*b1) (Tsampling*b1)];
-C = [1 0; 0 0];
-D = zeros(2);
-sysSSk = ss(A,B,C,D);
+Ak = [0 1; (-1-Tsampling*a1-Tsampling^2*a2) (2-Tsampling*a1)];
+[P,D]=eig(Ak);
+Ak=P*D*P^(-1);
+Bk = [0 0; (Tsampling^2*b2-Tsampling*b1) (Tsampling*b1)];
+Ck = [1 0; 0 0];
+Dk = zeros(2);
+sysSSk = ss(Ak,Bk,Ck,Dk);
 [ySSk, kSSk] = lsim(sysSSk, uk_sin, k);
 subplot(1,2,1)
 stem(kSSk,ySSk(:,1),'LineWidth',0.1)
 hold on;
 
 % SS s
-[A, B, C, D] = tf2ss(num, den);
-sysSSs = ss(A,stepAmplitude.*B,C,D);
+[As, Bs, Cs, Ds] = tf2ss(num, den);
+sysSSs = ss(As,stepAmplitude.*Bs,Cs,Ds);
 [ySSs, kSSs] = lsim(sysSSs, ut_sin, t);
 %subplot(1,2,2);
 plot(kSSs,ySSs)
