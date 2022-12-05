@@ -1,3 +1,5 @@
+% cei, pratica 6
+
 close all
 clc
 clear
@@ -23,7 +25,7 @@ v0 = vsv(1); vn = vsv(end);
 dv =  v0 - vn;
 
 % zsixtythree = dv * 0.63;
-zthirdysev = dv * 0.37;
+zthirtysev = dv * 0.37;
 
 % search vsv row corresponding with zsixtythree
 
