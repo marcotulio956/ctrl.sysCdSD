@@ -1,0 +1,14 @@
+flowchart LR
+    refencia["R(s)"] --> |+| soma{ }
+    soma --> erro["E(s)"]
+    erro --> |"T"| erroEstrela["E*(s)"]
+    subgraph sistema["Sistema"]
+        erroEstrela --> controlador["D(z)"]
+        controlador --> |"M*(s)"| gzoh["Gzoh(s)"]
+        subgraph gs["G(s)"]
+            gzoh --> gps["Gp(s)"]
+        end
+        gps --> saida["C(s)"]
+        saida --> filtro["H(s)"]
+    end
+    filtro --> |"-"| soma

@@ -1,0 +1,21 @@
+Circuit: * C:\Users\Mark\Documents\MEGAsync\CEFET\Semestre7\lcdsd\ctrl.sysC(D)SD\spice\Draft1.asc
+
+.OP point found by inspection.
+
+Date: Sat Dec 03 20:38:36 2022
+Total elapsed time: 0.078 seconds.
+
+tnom = 27
+temp = 27
+method = modified trap
+totiter = 2132
+traniter = 2132
+tranpoints = 1067
+accept = 1065
+rejected = 2
+matrix size = 4
+fillins = 0
+solver = Normal
+Matrix Compiler1: 100 bytes object code size  0.0/0.0/[0.0]
+Matrix Compiler2: off  [0.0]/0.0/0.1
+

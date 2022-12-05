@@ -3,7 +3,7 @@ clc
 clear
 
 current_folder = pwd;
-vs = readtable ( strcat( current_folder,'/ALL0003/F0003CH2.CSV.xlsx' ) )
+vs = readtable ( strcat( current_folder,'/ALL0000/F0003CH2.CSV.xlsx' ) )
 
 vst = table2array(vs (:,4));
 vsv = table2array(vs (:,5));

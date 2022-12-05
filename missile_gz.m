@@ -20,21 +20,25 @@ Gs = tf(num,den);
 
 Gz = c2d(Gs,Tsampling)
 
-subplot(1,3,1)
+subplot(1,4,1)
 hold on;
 impulse(Gz)
 legend("T=10s, Ruim")
 
 Tsampling = 100*10^(-3)
 Gz = c2d(Gs,Tsampling)
-subplot(1,3,2)
+subplot(1,4,2)
 impulse(Gz)
 legend("T=0.1s, Bom")
 
 Tsampling = 1*10^(-3)
 Gz = c2d(Gs,Tsampling)
-subplot(1,3,3)
+subplot(1,4,3)
 impulse(Gz)
-legend("T=1ps, Ideal")
+legend("T=1ps, Otimo")
+
+subplot(1,4,4)
+impulse(Gs)
+legend("G(s) Continuo")
 
 sgtitle('Respota ao Impulso de G(z)')
