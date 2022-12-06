@@ -25,11 +25,15 @@ hold on;
 impulse(Gz)
 legend("T=10s, Ruim")
 
+zpk(Gz)
+
 Tsampling = 100*10^(-3)
 Gz = c2d(Gs,Tsampling)
 subplot(1,4,2)
 impulse(Gz)
 legend("T=0.1s, Bom")
+
+zpk(Gz)
 
 Tsampling = 1*10^(-3)
 Gz = c2d(Gs,Tsampling)
@@ -37,8 +41,11 @@ subplot(1,4,3)
 impulse(Gz)
 legend("T=1ps, Otimo")
 
+zpk(Gz)
+
 subplot(1,4,4)
 impulse(Gs)
 legend("G(s) Continuo")
 
-sgtitle('Respota ao Impulso de G(z)')
+sgtitle('Resposta ao Impulso de G(z)')
+

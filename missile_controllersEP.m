@@ -1,11 +1,7 @@
 % parte 4, trab cdsd
 % controlador para erro de posicao menor que 5 porcento, sistema tipo 0(n.
 % de polos integradores)
-% a referencia eh o 
-
-close all
-clc
-clear
+% a referencia eh o deg
 
 t = 0:0.01:10;
 
@@ -21,9 +17,9 @@ Gz = c2d(Gs,Tsampling)
 
 hold on
 
-Kp = 0.05;
+Kp = 1.00;
 C = Kp;
-mf = feedback(Gz, C);
+mf = feedback(C*Gz, 1);
 step(mf)
 legend("Kp=0.05")
 

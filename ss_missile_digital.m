@@ -6,10 +6,10 @@ clc
 clear
 w = 0.9982
 Tau_alpha = 8.1053
-Tsampling = 6*10^(1)
+Tsampling = 60
 z = 4.8715
 
-k = 0:0.05:3 % one by one
+k = 0:0.1:5 % one by one
 
 % u = [one(2,1) zeros(2, length(k)-1)] % impulse
 stepAmplitude = 1
@@ -32,7 +32,7 @@ stem(k1,y(:,1))
 
 hold on;
 
-t = 0:0.01:3
+t = 0:0.1:5;
 
 s=tf('s');
 

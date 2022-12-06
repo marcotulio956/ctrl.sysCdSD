@@ -1,3 +1,5 @@
 *.CSV
 *.SET
-
+/img
+*.log
+*.raw

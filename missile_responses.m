@@ -11,30 +11,34 @@ t = 0:0.01:10
 
 s=tf('s');
 
-gs = tf([w^2*T, w^2],[1, 2*z*w, w^2])
+num = [w^2*T w^2] 
+den = [1 2*z*w w^2]
 
-us=1
+gs = tf(num, den)
 
-sys=gs*us
+pi = 3.14
 
-step(sys,t)
+%u1=1*sin(t);
+%u2=0.3*sin(t);
+%u3=0.7*sin(t);
 
-hold on 
+u1=1*sin(t);
+u2=1*sin(t-pi/2);
+u3=1*sin(t-pi);
 
-us2=0.7
+[A, B, C, D]=tf2ss(num, den)
 
-sys2=gs*us2
+sys = ss(A,B,C,D);
 
-step(sys2,t)
+[y1, t1] = lsim(sys, u1, t, [0 0]);
+[y2, t2] = lsim(sys, u2, t, [0 0]);
+[y3, t3] = lsim(sys, u3, t, [0 0]);
 
-hold on 
+plot(t1,y1,t2,y2,t3,y3);
 
-us3=0.3
-
-sys3=gs*us3
-
-step(sys3,t)
-
-legend("1(t-1)","1(t-2)","1(t-3)")
-
-title("Degraus Diferentes Atrasados")
+%legend("sin(t)","0.3sin(t)","0.7sin(t)")
+%title("Senos Diferentes Amplitudes")
+legend("sin(t)","sin(t-pi/2)","sin(t-pi)")
+title("Senos Diferentes Atrasados")
+ylabel('Amplitude') 
+xlabel('Time (seconds)') 

@@ -9,7 +9,7 @@ Tsampling = Tau_alpha/10;
 z = 4.8715;
 sin_freq = 2;
 
-dK = 0.05;
+dK = 0.1;
 ksimtime = 10;
 k = 0:dK:ksimtime;
 
@@ -41,38 +41,36 @@ a1=2*z*w; a2=w^2; b1=w^2*Tau_alpha; b2=w^2;
 
 % SS k
 Ak = [0 1; (-1-Tsampling*a1-Tsampling^2*a2) (2-Tsampling*a1)];
-[P,D]=eig(Ak);
-Ak=P*D*P^(-1);
 Bk = [0 0; (Tsampling^2*b2-Tsampling*b1) (Tsampling*b1)];
 Ck = [1 0; 0 0];
 Dk = zeros(2);
 sysSSk = ss(Ak,Bk,Ck,Dk);
-[ySSk, kSSk] = lsim(sysSSk, uk_sin, k);
+[ySSk, kSSk] = lsim(sysSSk, uk_ramp, k);
 subplot(1,2,1)
 stem(kSSk,ySSk(:,1),'LineWidth',0.1)
-hold on;
-
-% SS s
-[As, Bs, Cs, Ds] = tf2ss(num, den);
-sysSSs = ss(As,stepAmplitude.*Bs,Cs,Ds);
-[ySSs, kSSs] = lsim(sysSSs, ut_sin, t);
-%subplot(1,2,2);
-plot(kSSs,ySSs)
-plot(t,ut_sin)
-legend("sys SS k","sys1 SS s","u(t)")
-title("Espaço de Estados")
-
-% G(s)
-sysGs = tf(num,den);
-[y1, t1] = lsim(sysGs, ut_sin, t);
-subplot(1,2,2)
-plot(t1,y1,t1,ut_sin)
-title("Função de Transferência")
-
+legend("SSk")
+title("Discretizado")
 ylabel("Gain")
 xlabel("Time (seconds)")
+hold on;
 
-legend("sys2 G(s)", "u(t)");
+% SS k DiAag
+[Pk,Dk]=eig(-1.*Ak);
+Akw = Pk*Ak*(Pk^(-1));
+Bkw = Pk*Bk;
+Ckw = Ck*(Pk^(-1));
+Dkw = Dk;
+sysSSkw = ss(Akw,Bkw,Ckw,Dkw);
+[ySSkw, kSSkw] = lsim(sysSSkw, uk_ramp, k);
+subplot(1,2,2)
+stem(kSSkw,ySSkw(:,1),'LineWidth',0.1)
+legend("SSkw")
+title("Discretizado Diag")
+ylabel("Gain")
+xlabel("Time (seconds)")
+hold on;
 
-sgtitle('Resposta ao Degrau')
+sgtitle('Resposta a Rampa SSk vs SSkw')
+
+
 
