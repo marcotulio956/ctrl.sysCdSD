@@ -21,12 +21,21 @@ Gz = c2d(Gs,Tsampling)
 
 hold on
 
-C = 0.05
-mf = feedback(Gz, C);
-step(mf)
+C1 = pidtune(Gz, 'P')
+mf1 = feedback(C1*Gz, 1);
+step(mf1)
 
-C2 = pidtune(Gz, 'PID')
+C2 = pidtune(Gz, 'PI')
 mf2 = feedback(C2*Gz, 1);
 step(mf2)
-legend("Kp=0.05", "Kp=0.0256 Ki=0.256 Kd=0.00064, Tuned")
+
+C3 = pidtune(Gz, 'PD')
+mf3 = feedback(C3*Gz, 1);
+step(mf3)
+
+C4 = pidtune(Gz, 'PID')
+mf4 = feedback(C4*Gz, 1);
+step(mf4)
+
+legend("P","PI","PD","PID");%, "Kp=0.0256 Ki=0.256 Kd=0.00064, Tuned")
 
