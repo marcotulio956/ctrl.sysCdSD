@@ -1,0 +1,1 @@
+% aquecimento12v_resfriamento5v: tinicial: 28,8 graus; tmax 54,8; tmin: 30,8 
